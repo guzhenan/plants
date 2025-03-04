@@ -116,6 +116,7 @@ void mouseClick()//用户事件
 {
 	ExMessage msg;
 	static int status = 0;
+	static bool flag = true;
 	if (peekmessage(&msg))
 	{
 		if (msg.message == WM_LBUTTONDOWN)
@@ -138,6 +139,7 @@ void mouseClick()//用户事件
 			status = 0;
 			if (current.curY > 170 && current.curY< 490 && current.curX>250 && current.curX < 990)
 			{
+				
 				int row = (current.curY - 170) / 107;
 				int col = (current.curX - 250) / 82;
 				if (map[row][col].type == 0) //判断当前格子中是否已种植了植物
@@ -153,18 +155,46 @@ void mouseClick()//用户事件
 
 						}printf("\n");
 					}
+					
 				}
-					current.index = 0;
+					
 				}
-
+			current.index = 0;
 		}
 	}
 }
 
+void startUI()//开始界面
+{
+	IMAGE imgUIbg, imgUI_mu1, imgUI_mu2; 
+	loadimage(&imgUIbg,"res/menu.png");
+	loadimage(&imgUI_mu1, "res/menu1.png");
+	loadimage(&imgUI_mu2, "res/menu2.png");
+	bool flag=true;
+	ExMessage msgUI;
+	while (1)
+	{
+		BeginBatchDraw();
+		putimage(0, 0, &imgUIbg);
+		putimagePNG(484, 70, flag? &imgUI_mu1: &imgUI_mu2);
+		if (peekmessage(&msgUI))
+		{
+			if (msgUI.x > 484 && msgUI.x < 815 && msgUI.y>70 && msgUI.y < 215)
+			{
+				if (msgUI.message == WM_LBUTTONDOWN) flag = false;
+				else if (msgUI.message == WM_LBUTTONUP) return;
+			}
+			
+		}
+		EndBatchDraw();
+	}
+
+}
 
 int main(void)
 {
 	gameInit();
+	startUI();
 	printf("game is inited\n");
 	int timer = 0;
 	bool flag = true;
