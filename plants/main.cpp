@@ -6,26 +6,26 @@
 #define MAP_ROW 3
 #define MAP_COL 9
 enum { SUNFLOWER, PEA, BIG_MOUSE, TOTAL };
-IMAGE imgBg; //±³¾°Í¼
-IMAGE imgBr; //Ö²ÎïÀ¸Ä¿
-IMAGE imgCards[TOTAL]; //Ö²Îï¿¨Æ¬
-IMAGE* imgPlants[TOTAL][20]; //Ö²ÎïÖ¡Í¼
-char path[64];//Í¼Æ¬Â·¾¶»º³å
+IMAGE imgBg; //ï¿½ï¿½ï¿½ï¿½Í¼
+IMAGE imgBr; //Ö²ï¿½ï¿½ï¿½ï¿½Ä¿
+IMAGE imgCards[TOTAL]; //Ö²ï¿½ï¿¨Æ¬
+IMAGE* imgPlants[TOTAL][20]; //Ö²ï¿½ï¿½Ö¡Í¼
+char path[64];//Í¼Æ¬Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 struct currentStatus {
-	int index = 0;	//µ±Ç°Ñ¡ÖÐµÄÖ²ÎïË÷Òý,Ã»ÓÐÔòÎª0
-	int curX=0;	//µ±Ç°Ñ¡ÖÐÖ²ÎïºóÊó±êµÄX×ø±ê	
-	int curY=0;	//µ±Ç°Ñ¡ÖÐÖ²ÎïºóÊó±êµÄY×ø±ê	
+	int index = 0;	//ï¿½ï¿½Ç°Ñ¡ï¿½Ðµï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Ã»ï¿½ï¿½ï¿½ï¿½Îª0
+	int curX=0;	//ï¿½ï¿½Ç°Ñ¡ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½	
+	int curY=0;	//ï¿½ï¿½Ç°Ñ¡ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Yï¿½ï¿½ï¿½ï¿½	
 };
 currentStatus current;
 
 struct zhiwu {
-	int type;//0´ú±íÎÞÖ²Îï£¬1´ú±íÑ¡ÖÐÁËµÚÒ»ÖÖÖ²Îï
-	int frameindex;//Ö¡ÐòºÅ£¬Ö²Îï
+	int type;//0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï£¬1ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ëµï¿½Ò»ï¿½ï¿½Ö²ï¿½ï¿½
+	int frameindex;//Ö¡ï¿½ï¿½Å£ï¿½Ö²ï¿½ï¿½
 };
 struct zhiwu map[MAP_ROW][MAP_COL];
 
-bool is_FileExist(char* path)
+bool is_FileExist(char* path)//
 {
 	FILE* fp = fopen(path, "r");
 	if (fp != NULL) {
@@ -34,23 +34,23 @@ bool is_FileExist(char* path)
 	return fp != NULL;
 }
 
-void gameInit()//³õÊ¼»¯
+void gameInit()//ï¿½ï¿½Ê¼ï¿½ï¿½
 {
-	memset(imgPlants, NULL, sizeof(imgPlants));//Ö¸ÕëÈ«ÉèÎª¿ÕÖ¸Õë
-	memset(map, 0, sizeof(map)); //³õÊ¼µØÍ¼¶¼Îª0
-	loadimage(&imgBg, "res/bg.jpg"); //¼ÓÔØ±³¾°Í¼£¬¸ÄÎª¶à×Ö·û¼¯
-	loadimage(&imgBr, "res/bar5.png");//¼ÓÔØÖ²ÎïÀ¸
-	for (int i = 0; i < TOTAL; ++i) //¼ÓÔØÖ²Îï¿¨Æ¬
+	memset(imgPlants, NULL, sizeof(imgPlants));//Ö¸ï¿½ï¿½È«ï¿½ï¿½Îªï¿½ï¿½Ö¸ï¿½ï¿½
+	memset(map, 0, sizeof(map)); //ï¿½ï¿½Ê¼ï¿½ï¿½Í¼ï¿½ï¿½Îª0
+	loadimage(&imgBg, "res/bg.jpg"); //ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
+	loadimage(&imgBr, "res/bar5.png");//ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½
+	for (int i = 0; i < TOTAL; ++i) //ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿¨Æ¬
 	{
 		snprintf(path, sizeof(path), "res/Cards/card_%d.png", i + 1);
 		loadimage(&imgCards[i], path);
-		for (int j = 0; i < 20; ++j)
+		for (int j = 0; j < 20; ++j)
 		{
 			snprintf(path, sizeof(path), "res/zhiwu/%d/%d.png", i, j + 1);
 
 			if (is_FileExist(path)) {
-				imgPlants[i][j] = new IMAGE; //·ÖÅäÄÚ´æ¿Õ¼äÈç¹ûÎÄ¼þ´æÔÚ
-				loadimage(imgPlants[i][j], path); //¼ÓÔØÍ¼Æ¬µ½ÄÚ´æ
+				imgPlants[i][j] = new IMAGE; //ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
+				loadimage(imgPlants[i][j], path); //ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½Ú´ï¿½
 			}
 			else
 				break;
@@ -60,19 +60,19 @@ void gameInit()//³õÊ¼»¯
 	initgraph(WIDTH, HEIGHT, 1);
 }
 
-void windowUpdate()//Í¼Æ¬äÖÈ¾
+void windowUpdate()//Í¼Æ¬ï¿½ï¿½È¾
 {
 	BeginBatchDraw();
-	putimage(0, 0, &imgBg);//äÖÈ¾±³¾°
-	putimagePNG(250, 0, &imgBr);//äÖÈ¾¿¨Æ¬À¸
-	for (int i = 0; i < TOTAL; ++i)//äÖÈ¾¿¨Æ¬
+	putimage(0, 0, &imgBg);//ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½
+	putimagePNG(250, 0, &imgBr);//ï¿½ï¿½È¾ï¿½ï¿½Æ¬ï¿½ï¿½
+	for (int i = 0; i < TOTAL; ++i)//ï¿½ï¿½È¾ï¿½ï¿½Æ¬
 	{
 		int _X = 330 + 69 * i;
 		int _Y = 6;
 		putimage(_X, _Y, &imgCards[i]);
 	}
 
-	for (int i = 0; i < MAP_ROW; ++i)//äÖÈ¾ÖÖÖ²
+	for (int i = 0; i < MAP_ROW; ++i)//ï¿½ï¿½È¾ï¿½ï¿½Ö²
 	{
 		for (int j = 0; j < MAP_COL; ++j)
 		{
@@ -86,7 +86,7 @@ void windowUpdate()//Í¼Æ¬äÖÈ¾
 		}
 	}
 
-	if (current.index)//äÖÈ¾ÍÏ¶¯Ö²Îï
+	if (current.index)//ï¿½ï¿½È¾ï¿½Ï¶ï¿½Ö²ï¿½ï¿½
 	{
 		IMAGE* imgbuffer = imgPlants[current.index - 1][0];
 		putimagePNG(current.curX - imgbuffer->getwidth() / 2, current.curY - imgbuffer->getheight() / 2, imgbuffer);
@@ -95,9 +95,9 @@ void windowUpdate()//Í¼Æ¬äÖÈ¾
 }
 
 
-void gameUpdate()//ÓÎÏ·Êý¾Ý¸üÐÂ
+void gameUpdate()//ï¿½ï¿½Ï·ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½ï¿½
 {
-	for (int i = 0; i < MAP_ROW; ++i)//Ö¡¶¯¸üÐÂ
+	for (int i = 0; i < MAP_ROW; ++i)//Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	{
 		for (int j = 0; j < MAP_COL; ++j)
 		{
@@ -106,65 +106,69 @@ void gameUpdate()//ÓÎÏ·Êý¾Ý¸üÐÂ
 				int plant_type_index = map[i][j].type - 1;
 				map[i][j].frameindex ++;
 				int plant_frameindex = map[i][j].frameindex;
-				if (imgPlants[plant_type_index][plant_frameindex] == NULL) map[i][j].frameindex = 0; //±ÜÃâÊý×é±ß½çÒç³ö£¬Ö¡ÇåÁã
+				if (imgPlants[plant_type_index][plant_frameindex] == NULL) map[i][j].frameindex = 0; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½
 			}
 		}
 	}
 }
 
-void mouseClick()//ÓÃ»§ÊÂ¼þ
+void mouseClick()
 {
 	ExMessage msg;
-	static int status = 0;
-	static bool flag = true;
 	if (peekmessage(&msg))
 	{
+		// å¤„ç†å¡ç‰‡åŒºåŸŸçš„ç‚¹å‡»
 		if (msg.message == WM_LBUTTONDOWN)
 		{
+			// æ£€æŸ¥æ˜¯å¦ç‚¹å‡»äº†æ¤ç‰©å¡ç‰‡åŒºåŸŸ
 			if (msg.x > 330 && msg.x < 330 + 69 * TOTAL && msg.y < 96)
 			{
-				int index = (msg.x - 330) / 65;//Ë÷ÒýÇó½â
-				current.index = index + 1;//Ë÷Òý¸³Öµ
-				status = 1; //×´Ì¬×ª±ä
+				int index = (msg.x - 330) / 65;
+				current.index = index + 1;
 				printf("card_index=%d\n", current.index);
 			}
-		}
-		else if (msg.message == WM_MOUSEMOVE && status == 1)
-		{
-			current.curX = msg.x;
-			current.curY = msg.y;
-		}
-		else if (msg.message == WM_LBUTTONUP)
-		{
-			status = 0;
-			if (current.curY > 170 && current.curY< 490 && current.curX>250 && current.curX < 990)
+			// æ£€æŸ¥æ˜¯å¦åœ¨æœ‰æ•ˆçš„ç§æ¤åŒºåŸŸç‚¹å‡»
+			else if (current.index > 0 && 
+					 msg.y > 170 && msg.y < 490 && 
+					 msg.x > 250 && msg.x < 990)
 			{
-				
-				int row = (current.curY - 170) / 107;
-				int col = (current.curX - 250) / 82;
-				if (map[row][col].type == 0) //ÅÐ¶Ïµ±Ç°¸ñ×ÓÖÐÊÇ·ñÒÑÖÖÖ²ÁËÖ²Îï
+				int row = (msg.y - 170) / 107;
+				int col = (msg.x - 250) / 82;
+				if (map[row][col].type == 0) // ç¡®ä¿è¯¥ä½ç½®æ²¡æœ‰æ¤ç‰©
 				{
 					map[row][col].type = current.index;
-					printf("row=%d col=%d\n", row, col);//µ÷ÊÔ
-					for (int i = 0; i < MAP_ROW; ++i)//µ÷ÊÔ
+					map[row][col].frameindex = 0;
+					current.index = 0; // é‡ç½®é€‰æ‹©çŠ¶æ€
+					
+					// è°ƒè¯•è¾“å‡º
+					printf("row=%d col=%d\n", row, col);
+					for (int i = 0; i < MAP_ROW; ++i)
 					{
 						for (int j = 0; j < MAP_COL; ++j)
 						{
 							if (j != MAP_COL - 1) printf("%d ", map[i][j].type);
 							else printf("%d", map[i][j].type);
-
-						}printf("\n");
+						}
+						printf("\n");
 					}
-					
 				}
-					
-				}
-			current.index = 0;
+			}
+			// å¦‚æžœç‚¹å‡»å…¶ä»–åŒºåŸŸï¼Œå–æ¶ˆé€‰æ‹©
+			else
+			{
+				current.index = 0;
+			}
+		}
+		// å¤„ç†é¼ æ ‡ç§»åŠ¨
+		else if (msg.message == WM_MOUSEMOVE && current.index > 0)
+		{
+			current.curX = msg.x;
+			current.curY = msg.y;
 		}
 	}
 }
 
-void startUI()//¿ªÊ¼½çÃæ
+void startUI()//Ê¼
 {
 	IMAGE imgUIbg, imgUI_mu1, imgUI_mu2; 
 	loadimage(&imgUIbg,"res/menu.png");
